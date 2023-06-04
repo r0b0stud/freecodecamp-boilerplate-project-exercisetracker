@@ -24,8 +24,8 @@ app.get('/', (req, res) => {
 app.use(bodyParser.urlencoded({extended: true}));
 app.post("/api/users", async function(req, res){
   await clientMongoDB.connect();
-  var db = await clientMongoDB.db("tracker");
-  let collection = await db.collection("User");
+  var db = clientMongoDB.db("tracker");
+  let collection = db.collection("User");
   try {
     //check if username exists on db
     let resultsFind = await collection.find({username: req.body.username}).toArray();
@@ -49,8 +49,8 @@ app.post("/api/users", async function(req, res){
 
 app.get("/api/users", async function(req, res){
   await clientMongoDB.connect();
-  var db = await clientMongoDB.db("tracker");
-  let collection = await db.collection("User");
+  var db = clientMongoDB.db("tracker");
+  let collection = db.collection("User");
 
   try {
     //get all users
@@ -119,8 +119,8 @@ app.post("/api/users/:_id/exercises", async function(req, res){
 
   try {
     await clientMongoDB.connect();
-    var db = await clientMongoDB.db("tracker");
-    let collection = await db.collection("User");
+    var db = clientMongoDB.db("tracker");
+    let collection = db.collection("User");
     var ObjectId = require('mongodb').ObjectId;
     let resultsFind = await collection.find({_id : new ObjectId(req.params._id)}).toArray();
     //console.log(resultsFind);
@@ -131,7 +131,7 @@ app.post("/api/users/:_id/exercises", async function(req, res){
     }
     else {
       //insert into Exercise
-      collection = await db.collection("Exercise");
+      collection = db.collection("Exercise");
       let newExerciseOBJ = {
         username: resultsFind[0].username,
         description: req.body.description,
